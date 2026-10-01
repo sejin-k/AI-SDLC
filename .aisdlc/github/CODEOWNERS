@@ -1,0 +1,2 @@
+# Stage 1: intent 승인자 (Product Owner) — 적용 시 @<po-github-id>를 실제 계정/팀으로 교체
+/intent/ @<po-github-id>

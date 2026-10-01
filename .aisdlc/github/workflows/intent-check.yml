@@ -1,0 +1,28 @@
+name: Intent check
+on:
+  pull_request:
+    paths: ['intent/**/intent.md']
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Validate changed intents
+        run: |
+          files=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" | grep -E '^intent/[^/]+/intent\.md$' || true)
+          rc=0
+          for f in $files; do .aisdlc/scripts/validate-intent.sh "$f" || rc=1; done
+          exit $rc
+  po-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Require status accepted
+        run: |
+          files=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" | grep -E '^intent/[^/]+/intent\.md$' || true)
+          rc=0
+          for f in $files; do .aisdlc/scripts/validate-intent.sh --require-status accepted "$f" || rc=1; done
+          [ $rc -eq 0 ] || echo "::error::PO 승인 대기 — PO가 status: accepted로 커밋해야 merge 가능"
+          exit $rc
