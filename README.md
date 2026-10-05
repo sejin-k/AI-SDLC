@@ -67,3 +67,5 @@ cp "$H/.aisdlc/github/workflows/intent-check.yml" "$T/.github/workflows/"
 2. Claude의 질문에 답하며 `intent.md` 구체화 → 교정
 3. Claude가 `intent/<id>` 브랜치로 PR 생성 (label: `intent`)
 4. PO 승인: PR에서 `status: accepted` 커밋 후 merge / 반려: PR close
+
+&lt;TEST TEXT&gt;
